@@ -144,6 +144,24 @@ def query_library_by_librarian(librarian_name):
         return None
 
 
+def query_librarian_by_library_object(library_obj):
+    """
+    Alternative query - Get librarian directly using library object.
+    Uses Librarian.objects.get(library=...) to find librarian for a specific library.
+    """
+    try:
+        librarian = Librarian.objects.get(library=library_obj)
+        
+        print(f"\n=== Librarian for Library (direct query): {library_obj.name} ===")
+        print(f"Librarian: {librarian.name}")
+        print(f"Library: {library_obj.name}")
+        
+        return librarian
+    except Librarian.DoesNotExist:
+        print(f"No librarian assigned to library '{library_obj.name}'.")
+        return None
+
+
 # ============================================================================
 # 4. Complex Queries combining multiple relationships
 # ============================================================================

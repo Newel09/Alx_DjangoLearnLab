@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book
 from .models import Library
@@ -121,3 +122,68 @@ class UserLogoutView(LogoutView):
     Inherits from Django's LogoutView for automatic session termination.
     """
     template_name = 'relationship_app/logout.html'
+
+
+# Role-Based Access Control Views
+
+def is_admin(user):
+    """
+    Check if the user has the 'admin' role.
+    """
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'admin'
+
+
+def is_librarian(user):
+    """
+    Check if the user has the 'librarian' role.
+    """
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'librarian'
+
+
+def is_member(user):
+    """
+    Check if the user has the 'member' role.
+    """
+    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'member'
+
+
+@user_passes_test(is_admin)
+def admin_view(request):
+    """
+    View accessible only to users with 'Admin' role.
+    Displays administrative content and controls.
+    """
+    context = {
+        'role': 'Admin',
+        'message': 'Welcome to the Admin Dashboard',
+        'description': 'You have administrative access to manage the library system.',
+    }
+    return render(request, 'relationship_app/admin_view.html', context)
+
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    """
+    View accessible only to users with 'Librarian' role.
+    Displays librarian-specific content and controls.
+    """
+    context = {
+        'role': 'Librarian',
+        'message': 'Welcome to the Librarian Dashboard',
+        'description': 'You have access to manage library resources and patron information.',
+    }
+    return render(request, 'relationship_app/librarian_view.html', context)
+
+
+@user_passes_test(is_member)
+def member_view(request):
+    """
+    View accessible only to users with 'Member' role.
+    Displays member-specific content and controls.
+    """
+    context = {
+        'role': 'Member',
+        'message': 'Welcome to your Member Dashboard',
+        'description': 'You have access to browse library resources and manage your profile.',
+    }
+    return render(request, 'relationship_app/member_view.html', context)

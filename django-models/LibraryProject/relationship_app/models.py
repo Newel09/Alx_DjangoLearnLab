@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Author Model - represents book authors
 class Author(models.Model):
@@ -42,6 +43,36 @@ class Librarian(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        app_label = 'relationship_app'
+
+
+# UserProfile Model - Extends Django User with role-based access control
+class UserProfile(models.Model):
+    """
+    UserProfile model to extend Django's built-in User model.
+    Provides role-based access control with predefined roles.
+    """
+    
+    # Role choices for different user types
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('librarian', 'Librarian'),
+        ('member', 'Member'),
+    ]
+    
+    # OneToOne relationship with Django's User model
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
+    
+    # Role field with predefined choices
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='member')
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.get_role_display()}"
     
     class Meta:
         app_label = 'relationship_app'

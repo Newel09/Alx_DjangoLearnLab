@@ -6,9 +6,10 @@ including both function-based and class-based views.
 """
 
 from django.urls import path
+from . import views
 from .views import list_books
 from .views import LibraryDetailView
-from .views import register, user_login, user_logout
+from .views import UserLoginView, UserLogoutView
 
 app_name = 'relationship_app'
 
@@ -21,7 +22,7 @@ urlpatterns = [
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
     
     # Authentication views
-    path('register/', register, name='register'),
-    path('login/', user_login, name='login'),
-    path('logout/', user_logout, name='logout'),
+    path('register/', views.register, name='register'),
+    path('login/', UserLoginView.as_view(template_name='relationship_app/login.html'), name='login'),
+    path('logout/', UserLogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
 ]

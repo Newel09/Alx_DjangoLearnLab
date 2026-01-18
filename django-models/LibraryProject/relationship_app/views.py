@@ -3,6 +3,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book
@@ -93,3 +94,30 @@ def user_logout(request):
     """
     logout(request)
     return render(request, 'relationship_app/logout.html')
+
+
+# Class-based Authentication Views
+
+class UserLoginView(LoginView):
+    """
+    Class-based view for user login using Django's built-in LoginView.
+    Inherits from Django's LoginView for automatic authentication handling.
+    """
+    template_name = 'relationship_app/login.html'
+    form_class = AuthenticationForm
+    success_url = 'relationship_app:list_books'
+    
+    def get_success_url(self):
+        """
+        Redirect to the list_books page after successful login.
+        """
+        from django.urls import reverse
+        return reverse('relationship_app:list_books')
+
+
+class UserLogoutView(LogoutView):
+    """
+    Class-based view for user logout using Django's built-in LogoutView.
+    Inherits from Django's LogoutView for automatic session termination.
+    """
+    template_name = 'relationship_app/logout.html'

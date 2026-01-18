@@ -1,14 +1,17 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.detail import DetailView
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.forms import ModelForm
+from django import forms
 from .models import Book
 from .models import Library
+from .models import Author
 
 
 # Function-based View: List all books
@@ -187,3 +190,92 @@ def member_view(request):
         'description': 'You have access to browse library resources and manage your profile.',
     }
     return render(request, 'relationship_app/member_view.html', context)
+
+
+# Form for Book operations
+
+class BookForm(ModelForm):
+    """
+    ModelForm for Book model operations.
+    Used for creating and updating Book instances.
+    """
+    class Meta:
+        model = Book
+        fields = ['title', 'author']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter book title',
+            }),
+            'author': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }
+
+
+# Permission-based views for Book operations
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    """
+    View to add a new book.
+    Requires 'can_add_book' permission.
+    """
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('relationship_app:list_books')
+    else:
+        form = BookForm()
+    
+    context = {
+        'form': form,
+        'action': 'Add',
+        'title': 'Add New Book',
+    }
+    return render(request, 'relationship_app/book_form.html', context)
+
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, pk):
+    """
+    View to edit an existing book.
+    Requires 'can_change_book' permission.
+    """
+    book = get_object_or_404(Book, pk=pk)
+    
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('relationship_app:list_books')
+    else:
+        form = BookForm(instance=book)
+    
+    context = {
+        'form': form,
+        'action': 'Edit',
+        'title': f'Edit Book: {book.title}',
+        'book': book,
+    }
+    return render(request, 'relationship_app/book_form.html', context)
+
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, pk):
+    """
+    View to delete a book.
+    Requires 'can_delete_book' permission.
+    """
+    book = get_object_or_404(Book, pk=pk)
+    
+    if request.method == 'POST':
+        book.delete()
+        return redirect('relationship_app:list_books')
+    
+    context = {
+        'book': book,
+        'title': f'Delete Book: {book.title}',
+    }
+    return render(request, 'relationship_app/book_confirm_delete.html', context)

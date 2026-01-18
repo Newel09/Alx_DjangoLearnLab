@@ -22,6 +22,11 @@ class Book(models.Model):
     
     class Meta:
         app_label = 'relationship_app'
+        permissions = [
+            ('can_add_book', 'Can add a new book'),
+            ('can_change_book', 'Can edit/change book details'),
+            ('can_delete_book', 'Can delete a book'),
+        ]
 
 
 # Library Model - uses ManyToMany to Book (One Library can have many Books, and one Book can be in many Libraries)

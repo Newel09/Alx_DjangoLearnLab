@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Book
 from .models import Library
 
@@ -37,3 +40,54 @@ class LibraryDetailView(DetailView):
         # You can add more context data here if needed
         context['books_count'] = self.object.books.count()
         return context
+
+
+# Authentication Views
+
+def register(request):
+    """
+    Function-based view for user registration.
+    Allows new users to create an account using the built-in UserCreationForm.
+    """
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Automatically log in the user after registration
+            login(request, user)
+            return redirect('relationship_app:list_books')
+    else:
+        form = UserCreationForm()
+    
+    context = {'form': form}
+    return render(request, 'relationship_app/register.html', context)
+
+
+def user_login(request):
+    """
+    Function-based view for user login.
+    Authenticates users and manages user sessions.
+    """
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('relationship_app:list_books')
+    else:
+        form = AuthenticationForm()
+    
+    context = {'form': form}
+    return render(request, 'relationship_app/login.html', context)
+
+
+def user_logout(request):
+    """
+    Function-based view for user logout.
+    Terminates the user session and redirects to logout confirmation page.
+    """
+    logout(request)
+    return render(request, 'relationship_app/logout.html')

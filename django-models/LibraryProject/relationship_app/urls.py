@@ -8,6 +8,7 @@ including both function-based and class-based views.
 from django.urls import path
 from .views import list_books
 from .views import LibraryDetailView
+from .views import register, user_login, user_logout
 
 app_name = 'relationship_app'
 
@@ -18,4 +19,9 @@ urlpatterns = [
     # Class-based view: Display library details
     # The <int:pk> captures the library ID from the URL
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
+    
+    # Authentication views
+    path('register/', register, name='register'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
 ]

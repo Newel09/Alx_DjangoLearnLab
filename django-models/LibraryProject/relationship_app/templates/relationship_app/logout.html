@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 100px auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #28a745;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 15px;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .links {
+            margin-top: 30px;
+        }
+        a {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        .info-box {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-box">
+            <h1>✓ Logged Out Successfully</h1>
+        </div>
+        
+        <p>You have been successfully logged out of your account.</p>
+        <p>Your session has been terminated and you are no longer authenticated.</p>
+        
+        <div class="links">
+            <a href="{% url 'relationship_app:login' %}">Login Again</a>
+        </div>
+    </div>
+</body>
+</html>

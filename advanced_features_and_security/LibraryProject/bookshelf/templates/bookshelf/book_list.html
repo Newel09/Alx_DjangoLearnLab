@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Books - Library Project{% endblock %}
+
+{% block content %}
+<h2>📖 Books</h2>
+
+<!-- Search Form with Input Validation -->
+<form method="get" action="{% url 'book-list' %}" style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+    <div class="form-group">
+        <label for="search">Search Books:</label>
+        <input 
+            type="text" 
+            id="search" 
+            name="search" 
+            value="{{ search_query }}"
+            placeholder="Search by title or author..."
+            maxlength="200"
+        >
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search_query %}
+            <a href="{% url 'book-list' %}" class="btn btn-secondary">Clear Search</a>
+        {% endif %}
+    </div>
+    
+    <!-- Security Note -->
+    <small style="color: #666;">
+        <strong>Security:</strong> Search queries are safely parameterized using Django's ORM 
+        and validated to prevent SQL injection attacks.
+    </small>
+</form>
+
+{% if search_query %}
+    <p style="color: #667eea; margin: 15px 0;">
+        Search results for: <strong>{{ search_query }}</strong> ({{ books.count }} found)
+    </p>
+{% endif %}
+
+{% if perms.bookshelf.can_create_book %}
+    <a href="{% url 'book-create' %}" class="btn btn-primary">+ Add New Book</a>
+{% endif %}
+
+{% if books %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.publication_year }}</td>
+                    <td>
+                        {% if perms.bookshelf.can_view_book %}
+                            <a href="{% url 'book-detail' book.id %}" class="btn btn-primary">View</a>
+                        {% endif %}
+                        {% if perms.bookshelf.can_edit_book %}
+                            <a href="{% url 'book-edit' book.id %}" class="btn btn-secondary">Edit</a>
+                        {% endif %}
+                        {% if perms.bookshelf.can_delete_book %}
+                            <a href="{% url 'book-delete' book.id %}" class="btn btn-danger">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="info">
+        <p>
+            {% if search_query %}
+                No books found matching "{{ search_query }}". 
+                <a href="{% url 'book-list' %}">View all books</a>
+            {% else %}
+                No books available. {% if perms.bookshelf.can_create_book %}<a href="{% url 'book-create' %}">Create one</a>{% endif %}
+            {% endif %}
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

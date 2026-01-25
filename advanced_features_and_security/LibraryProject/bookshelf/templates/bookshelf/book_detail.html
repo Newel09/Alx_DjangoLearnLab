@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - Library Project{% endblock %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+
+<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Publication Year:</strong> {{ book.publication_year }}</p>
+    <p><strong>Added:</strong> {{ book.id }}</p>
+</div>
+
+<div>
+    {% if perms.bookshelf.can_edit_book %}
+        <a href="{% url 'book-edit' book.id %}" class="btn btn-primary">Edit Book</a>
+    {% endif %}
+    {% if perms.bookshelf.can_delete_book %}
+        <a href="{% url 'book-delete' book.id %}" class="btn btn-danger">Delete Book</a>
+    {% endif %}
+    <a href="{% url 'book-list' %}" class="btn btn-secondary">Back to Books</a>
+</div>
+{% endblock %}

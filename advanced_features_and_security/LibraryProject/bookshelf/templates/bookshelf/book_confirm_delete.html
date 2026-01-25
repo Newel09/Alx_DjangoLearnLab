@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Book - Library Project{% endblock %}
+
+{% block content %}
+<h2>Delete Book</h2>
+
+<div class="warning">
+    <strong>⚠️ Warning:</strong> You are about to delete a book. This action cannot be undone.
+</div>
+
+<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <p><strong>Title:</strong> {{ book.title }}</p>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Publication Year:</strong> {{ book.publication_year }}</p>
+</div>
+
+<form method="post" action="">
+    {% comment %}
+    CSRF TOKEN PROTECTION
+    The {% csrf_token %} tag is REQUIRED for all POST requests.
+    This is especially important for destructive operations like deletion.
+    It ensures the delete request is coming from an authorized user within your application.
+    {% endcomment %}
+    {% csrf_token %}
+    
+    <button type="submit" class="btn btn-danger">Yes, Delete This Book</button>
+    <a href="{% url 'book-detail' book.id %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

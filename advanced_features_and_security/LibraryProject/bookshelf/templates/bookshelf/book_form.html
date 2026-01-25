@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Book - Library Project{% endblock %}
+
+{% block content %}
+<h2>{{ action }} Book</h2>
+
+<form method="post" action="">
+    {% comment %}
+    CSRF TOKEN PROTECTION
+    The {% csrf_token %} tag is required for all POST requests in Django.
+    This prevents Cross-Site Request Forgery (CSRF) attacks by:
+    1. Generating a unique token for each form
+    2. Validating the token on the server side
+    3. Ensuring requests originate from your application
+    
+    Without this token, Django will reject the POST request with a 403 Forbidden error.
+    {% endcomment %}
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        <input 
+            type="text" 
+            name="title" 
+            id="{{ form.title.id_for_label }}"
+            value="{{ form.title.value|default:'' }}"
+            maxlength="200"
+            required
+        >
+        {% if form.title.errors %}
+            <div class="error">
+                {% for error in form.title.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.author.id_for_label }}">Author</label>
+        <input 
+            type="text" 
+            name="author" 
+            id="{{ form.author.id_for_label }}"
+            value="{{ form.author.value|default:'' }}"
+            maxlength="100"
+            required
+        >
+        {% if form.author.errors %}
+            <div class="error">
+                {% for error in form.author.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.publication_year.id_for_label }}">Publication Year</label>
+        <input 
+            type="number" 
+            name="publication_year" 
+            id="{{ form.publication_year.id_for_label }}"
+            value="{{ form.publication_year.value|default:'' }}"
+            min="1000"
+            max="2100"
+            required
+        >
+        {% if form.publication_year.errors %}
+            <div class="error">
+                {% for error in form.publication_year.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">{{ action }} Book</button>
+        <a href="{% url 'book-list' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<div class="info">
+    <strong>Security Note:</strong> This form includes a CSRF token ({% csrf_token %}) to protect against unauthorized form submissions.
+</div>
+{% endblock %}

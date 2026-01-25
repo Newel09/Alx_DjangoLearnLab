@@ -102,8 +102,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Custom User Model Configuration
-# Point to the custom user model in relationship_app
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+# Point to the custom user model in bookshelf app
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 
 # Internationalization

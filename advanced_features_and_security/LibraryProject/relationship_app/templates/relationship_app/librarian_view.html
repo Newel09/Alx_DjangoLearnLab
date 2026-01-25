@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .role-badge {
+            display: inline-block;
+            background-color: #1565c0;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .content h2 {
+            color: #333;
+            border-bottom: 2px solid #1565c0;
+            padding-bottom: 10px;
+        }
+        .content p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .librarian-section {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-left: 4px solid #1565c0;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .librarian-section h3 {
+            color: #0d47a1;
+            margin-top: 0;
+        }
+        .librarian-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .librarian-section li {
+            padding: 8px 0;
+            border-bottom: 1px solid #bbdefb;
+        }
+        .librarian-section li:last-child {
+            border-bottom: none;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #1565c0;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: #0d47a1;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #1565c0;
+        }
+        .feature-card h4 {
+            color: #0d47a1;
+            margin-top: 0;
+        }
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="role-badge">📖 {{ role }}</div>
+            <h1>{{ message }}</h1>
+            <p>{{ description }}</p>
+        </div>
+        
+        <div class="content">
+            <h2>Librarian Dashboard</h2>
+            <p>You have access to manage library resources and patron information. Below are the main librarian functions:</p>
+            
+            <div class="librarian-section">
+                <h3>📚 Library Resource Management</h3>
+                <ul>
+                    <li>Add and catalog new books</li>
+                    <li>Manage book availability and inventory</li>
+                    <li>Update book information and descriptions</li>
+                    <li>Process book returns and check-outs</li>
+                </ul>
+            </div>
+            
+            <div class="librarian-section">
+                <h3>👥 Patron Management</h3>
+                <ul>
+                    <li>View and manage patron accounts</li>
+                    <li>Track patron borrowing history</li>
+                    <li>Manage patron requests and reservations</li>
+                    <li>Send notifications to patrons</li>
+                </ul>
+            </div>
+            
+            <div class="librarian-section">
+                <h3>📊 Library Analytics</h3>
+                <ul>
+                    <li>View circulation statistics</li>
+                    <li>Generate collection reports</li>
+                    <li>Monitor popular items</li>
+                    <li>Access usage trends</li>
+                </ul>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🔍 Search & Catalog</h4>
+                    <p>Search and manage the library catalog</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Reports</h4>
+                    <p>Generate reports on library operations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚙️ Configuration</h4>
+                    <p>Configure library-specific settings</p>
+                </div>
+            </div>
+        </div>
+        
+        <a href="{% url 'relationship_app:list_books' %}" class="back-link">← Back to Library</a>
+    </div>
+</body>
+</html>

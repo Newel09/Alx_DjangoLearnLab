@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 12px;
+            border-left: 4px solid #28a745;
+            border-radius: 4px;
+        }
+        li:hover {
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        .book-author {
+            color: #666;
+            font-size: 14px;
+        }
+        .book-publication {
+            color: #999;
+            font-size: 12px;
+        }
+        .book-count {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .no-books {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .library-info {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="library-info">
+            <h1>Library: {{ library.name }}</h1>
+        </div>
+        
+        <h2>Books in Library:</h2>
+        
+        {% if library.books.all %}
+            <ul>
+                {% for book in library.books.all %}
+                <li>
+                    <strong>{{ book.title }}</strong>
+                    <div class="book-author">by {{ book.author.name }}</div>
+                    {% if book.publication_year %}
+                    <div class="book-publication">Published {{ book.publication_year }}</div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="book-count">
+                Total Books in Library: {{ books_count }}
+            </div>
+        {% else %}
+            <div class="no-books">
+                <p>No books available in this library.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -52,6 +52,9 @@ X_FRAME_OPTIONS = 'DENY'
 CSRF_COOKIE_SECURE = True       # Only send CSRF cookie over HTTPS
 SESSION_COOKIE_SECURE = True    # Only send session cookie over HTTPS
 SECURE_SSL_REDIRECT = True           # Redirect all HTTP requests to HTTPS
+# If the app is behind a reverse proxy/load balancer that terminates TLS (e.g., Heroku, nginx),
+# ensure the proxy sets the 'X-Forwarded-Proto' header. Django can use that header to detect secure requests:
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # 4. CSRF Protection
 # CSRF tokens are required for all POST, PUT, DELETE requests

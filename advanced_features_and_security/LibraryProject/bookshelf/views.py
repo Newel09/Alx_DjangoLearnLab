@@ -248,5 +248,5 @@ def example_view(request):
     else:
         form = ExampleForm()
     context = {'form': form}
-    return render(request, 'bookshelf/example_form.html', context)
+    return render(request, 'bookshelf/form_example.html', context)
 

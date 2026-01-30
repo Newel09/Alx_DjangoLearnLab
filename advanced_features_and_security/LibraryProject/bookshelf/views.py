@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.db.models import Q
 from .models import Book
-from .forms import BookForm
+from .forms import BookForm, ExampleForm
 
 """
 Views with Permission-Based Access Control
@@ -234,4 +234,18 @@ def book_delete(request, pk):
     
     context = {'book': book}
     return render(request, 'bookshelf/book_confirm_delete.html', context)
+
+
+@require_http_methods(["GET", "POST"])
+def example_view(request):
+    """Simple example view demonstrating ExampleForm usage."""
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            messages.success(request, 'Form submitted successfully!')
+            return redirect('example')
+    else:
+        form = ExampleForm()
+    context = {'form': form}
+    return render(request, 'bookshelf/example_form.html', context)
 

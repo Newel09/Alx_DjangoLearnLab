@@ -47,11 +47,11 @@ SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
 # 3. HTTPS and Secure Cookies
-# IMPORTANT: Set to True only when using HTTPS in production
-# For development with HTTP, keep as False
-CSRF_COOKIE_SECURE = not DEBUG       # Only send CSRF cookie over HTTPS in production
-SESSION_COOKIE_SECURE = not DEBUG    # Only send session cookie over HTTPS in production
-SECURE_SSL_REDIRECT = not DEBUG      # Redirect HTTP to HTTPS in production
+# IMPORTANT: Ensure HTTPS is used in production (set up TLS certificates).
+# Cookies are only sent over HTTPS to protect sensitive session and CSRF tokens.
+CSRF_COOKIE_SECURE = True       # Only send CSRF cookie over HTTPS
+SESSION_COOKIE_SECURE = True    # Only send session cookie over HTTPS
+SECURE_SSL_REDIRECT = True           # Redirect all HTTP requests to HTTPS
 
 # 4. CSRF Protection
 # CSRF tokens are required for all POST, PUT, DELETE requests
@@ -65,9 +65,9 @@ SESSION_SAVE_EVERY_REQUEST = False
 
 # 6. Security Headers
 # Set Strict-Transport-Security header to enforce HTTPS
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # 1 year in production
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
-SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_HSTS_SECONDS = 31536000  # 1 year - instruct browsers to use only HTTPS
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow site to be included in browser preload lists
 
 # 7. Password Hashing
 # Use strong password hashing algorithm

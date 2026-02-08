@@ -3,22 +3,19 @@ from .models import Book
 from .serializers import BookSerializer
 
 class BookListView(generics.ListAPIView):
-    queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-class BookDetailView(generics.RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    def get_queryset(self):
+        """
+        Optional filters:
+        /api/books/?search=<text>
+        """
+        qs = Book.objects.all()
 
-class BookCreateView(generics.CreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+        search = self.request.query_params.get("search")
+        if search:
+            # Adjust field name(s) to match your model:
+            qs = qs.filter(title__icontains=search)
 
-class BookUpdateView(generics.UpdateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-class BookDeleteView(generics.DestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+        return qs
 

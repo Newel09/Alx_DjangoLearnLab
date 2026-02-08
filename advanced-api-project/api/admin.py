@@ -1,8 +1,11 @@
 from django.contrib import admin
-from .models import Book
+from .models import Author, Book
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author', 'created_at')
-    list_display_links = ('title',)
+    list_display = ("id", "title", "publication_year", "author")

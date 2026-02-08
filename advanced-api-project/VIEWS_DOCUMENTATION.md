@@ -285,24 +285,26 @@ class IsAuthenticatedForWrite(AllowAny):
 
 | Method | Endpoint | View | Auth | Purpose |
 |--------|----------|------|------|---------|
-| GET | `/api/books/` | BookListCreateView | Public | List all books |
+| GET | `/api/books/list/` | BookListView | Public | Dedicated read-only list |
+| GET | `/api/books/` | BookListCreateView | Public | List all books (with create option) |
 | POST | `/api/books/` | BookListCreateView | Required | Create a new book |
 | GET | `/api/books/<pk>/` | BookDetailView | Public | Retrieve single book |
 | PUT | `/api/books/<pk>/update/` | BookUpdateView | Required | Full update book |
 | PATCH | `/api/books/<pk>/update/` | BookUpdateView | Required | Partial update book |
 | DELETE | `/api/books/<pk>/delete/` | BookDeleteView | Required | Delete book |
-
 ---
 
-## Testing Guide
+## BookListView (Generic: ListAPIView)
 
-### 1. Get Authentication Token
-```bash
-# First, create a superuser (if not already done)
+
+
+
+
 python manage.py createsuperuser
 
 # Obtain token (using DRF's default token endpoint)
 curl -X POST http://localhost:8000/api-token-auth/ \
+
   -H "Content-Type: application/json" \
   -d '{"username": "admin", "password": "password"}'
 ```
